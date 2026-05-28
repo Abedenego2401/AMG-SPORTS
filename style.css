@@ -2,7 +2,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   scroll-behavior:smooth;
 }
 
@@ -19,11 +19,22 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:#000;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(10px);
   position:fixed;
   top:0;
   z-index:999;
   border-bottom:2px solid #0066ff;
+}
+
+.logo-container{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.logo-img{
+  width:60px;
 }
 
 .logo{
@@ -44,28 +55,11 @@ nav{
 nav a{
   color:white;
   text-decoration:none;
-  position:relative;
-  font-weight:bold;
   transition:0.3s;
-}
-
-nav a::after{
-  content:"";
-  position:absolute;
-  width:0%;
-  height:2px;
-  background:#0066ff;
-  left:0;
-  bottom:-6px;
-  transition:0.4s;
 }
 
 nav a:hover{
   color:#0066ff;
-}
-
-nav a:hover::after{
-  width:100%;
 }
 
 .menu-mobile{
@@ -81,14 +75,14 @@ nav a:hover::after{
   display:flex;
   justify-content:center;
   align-items:center;
-  position:relative;
   text-align:center;
+  position:relative;
 }
 
 .overlay{
+  position:absolute;
   width:100%;
   height:100%;
-  position:absolute;
   background:rgba(0,0,0,0.75);
 }
 
@@ -97,23 +91,28 @@ nav a:hover::after{
   z-index:2;
 }
 
-.hero-content h1{
-  font-size:85px;
+.hero-logo{
+  width:180px;
+  margin-bottom:20px;
 }
 
-.hero-content span{
+.hero h1{
+  font-size:80px;
+}
+
+.hero span{
   color:#0066ff;
 }
 
-.hero-content p{
-  margin:25px 0;
+.hero p{
+  margin:20px 0;
   font-size:22px;
 }
 
 .hero-buttons{
   display:flex;
-  gap:20px;
   justify-content:center;
+  gap:20px;
 }
 
 .btn-primary,
@@ -130,6 +129,7 @@ nav a:hover::after{
 .btn-primary{
   background:#0066ff;
   color:white;
+  box-shadow:0 0 20px rgba(0,102,255,0.5);
 }
 
 .btn-primary:hover{
@@ -161,6 +161,44 @@ section{
   color:#0066ff;
 }
 
+/* SOBRE */
+
+.about-content{
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+  line-height:1.8;
+  font-size:20px;
+}
+
+/* OBJETIVOS */
+
+.goals-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+}
+
+.goal-box{
+  background:#111;
+  padding:40px;
+  border-radius:18px;
+  text-align:center;
+  transition:0.4s;
+}
+
+.goal-box:hover{
+  transform:translateY(-10px);
+  border:2px solid #0066ff;
+  box-shadow:0 0 25px rgba(0,102,255,0.4);
+}
+
+.goal-box i{
+  font-size:50px;
+  color:#0066ff;
+  margin-bottom:20px;
+}
+
 /* PRODUTOS */
 
 .products-container{
@@ -174,12 +212,10 @@ section{
   border-radius:18px;
   overflow:hidden;
   transition:0.4s;
-  border:2px solid transparent;
 }
 
 .card:hover{
   transform:translateY(-10px);
-  border-color:#0066ff;
   box-shadow:0 0 25px rgba(0,102,255,0.4);
 }
 
@@ -195,7 +231,6 @@ section{
 
 .card-content h3{
   color:#0066ff;
-  margin-bottom:10px;
 }
 
 .price{
@@ -221,101 +256,6 @@ section{
   color:#0066ff;
 }
 
-/* BENEFICIOS */
-
-.benefits-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-}
-
-.benefit-box{
-  background:#111;
-  padding:50px;
-  border-radius:18px;
-  text-align:center;
-  transition:0.4s;
-  cursor:pointer;
-  border:2px solid transparent;
-}
-
-.benefit-box:hover{
-  transform:translateY(-10px);
-  border-color:#0066ff;
-  box-shadow:0 0 25px rgba(0,102,255,0.5);
-}
-
-.benefit-box i{
-  font-size:50px;
-  color:#0066ff;
-  margin-bottom:20px;
-}
-
-/* EQUIPE */
-
-.team-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
-
-.member{
-  background:#111;
-  padding:35px;
-  border-radius:15px;
-  text-align:center;
-  transition:0.4s;
-}
-
-.member:hover{
-  transform:translateY(-10px);
-  background:#0066ff;
-}
-
-.founder{
-  border:2px solid #0066ff;
-  box-shadow:0 0 20px rgba(0,102,255,0.4);
-}
-
-/* CONTATO */
-
-.contact-form{
-  max-width:700px;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
-.contact-form input,
-.contact-form textarea{
-  padding:18px;
-  background:#111;
-  border:none;
-  border-radius:8px;
-  color:white;
-}
-
-.contact-form textarea{
-  resize:none;
-  height:180px;
-}
-
-.contact-form button{
-  padding:18px;
-  border:none;
-  background:#0066ff;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.contact-form button:hover{
-  background:white;
-  color:#0066ff;
-}
-
 /* FOOTER */
 
 footer{
@@ -323,4 +263,40 @@ footer{
   text-align:center;
   padding:40px;
   border-top:2px solid #0066ff;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:768px){
+
+  nav{
+    position:absolute;
+    top:90px;
+    right:-100%;
+    width:250px;
+    height:100vh;
+    background:#000;
+    flex-direction:column;
+    padding:40px;
+    transition:0.4s;
+  }
+
+  nav.active{
+    right:0;
+  }
+
+  .menu-mobile{
+    display:block;
+    font-size:28px;
+    cursor:pointer;
+  }
+
+  .hero h1{
+    font-size:50px;
+  }
+
+  .title{
+    font-size:38px;
+  }
+
 }
