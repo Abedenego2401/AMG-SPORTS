@@ -19,6 +19,8 @@ links.forEach((link) => {
 
     e.preventDefault();
 
+    nav.classList.remove("active");
+
     const id = link.getAttribute("href");
 
     const section = document.querySelector(id);
@@ -51,64 +53,19 @@ buyButtons.forEach((button) => {
 
   button.addEventListener("click", () => {
 
-    button.innerHTML = "✔️ Produto Adicionado";
+    button.innerHTML = "✔ Produto Adicionado";
 
     button.style.background = "#00cc66";
 
     setTimeout(() => {
 
       button.innerHTML = "Comprar";
+
       button.style.background = "#0066ff";
 
     }, 2000);
 
   });
-
-});
-
-// BENEFÍCIOS INTERATIVOS
-
-const benefitBoxes = document.querySelectorAll(".benefit-box");
-
-benefitBoxes.forEach((box) => {
-
-  box.addEventListener("click", () => {
-
-    const title = box.querySelector("h3").innerText;
-
-    if(title === "Entrega Rápida"){
-
-      alert("🚚 Entrega em até 7 dias para todo o Brasil!");
-
-    }
-
-    else if(title === "Garantia"){
-
-      alert("🛡️ Garantia oficial AMG Sports!");
-
-    }
-
-    else{
-
-      alert("⭐ Qualidade premium para atletas profissionais!");
-
-    }
-
-  });
-
-});
-
-// FORMULÁRIO
-
-const form = document.querySelector(".contact-form");
-
-form.addEventListener("submit", (e) => {
-
-  e.preventDefault();
-
-  alert("Mensagem enviada com sucesso!");
-
-  form.reset();
 
 });
 
@@ -120,14 +77,13 @@ window.addEventListener("scroll", () => {
 
   if(window.scrollY > 50){
 
-    header.style.background = "#050505";
-    header.style.boxShadow = "0 0 15px rgba(0,0,0,0.5)";
+    header.style.boxShadow =
+    "0 0 15px rgba(0,0,0,0.5)";
 
   }
 
   else{
 
-    header.style.background = "#000";
     header.style.boxShadow = "none";
 
   }
