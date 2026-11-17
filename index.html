@@ -2,39 +2,29 @@
 <html lang="pt-BR">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>AMG Sports</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 
   <!-- FONT AWESOME -->
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
   <!-- HEADER -->
-
   <header>
-
     <div class="logo-container">
-
       <img src="logo.png" alt="Logo AMG Sports" class="logo-img">
-
       <div class="logo">
         AMG <span>Sports</span>
       </div>
-
     </div>
 
     <nav>
-
       <a href="#inicio">Início</a>
       <a href="#sobre">Sobre</a>
       <a href="#objetivos">Objetivos</a>
@@ -42,231 +32,136 @@
       <a href="#beneficios">Benefícios</a>
       <a href="#equipe">Equipe</a>
       <a href="#contato">Contato</a>
-
     </nav>
 
-    <div class="menu-mobile">
-      <i class="fa-solid fa-bars"></i>
+    <!-- BOTÃO DO CARRINHO NO HEADER -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <button id="btn-carrinho" style="background: #0066ff; border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-cart-shopping"></i> Carrinho (<span id="cart-count">0</span>)
+      </button>
+      <div class="menu-mobile">
+        <i class="fa-solid fa-bars"></i>
+      </div>
     </div>
-
   </header>
 
   <!-- HERO -->
-
   <section class="hero" id="inicio">
-
     <div class="overlay"></div>
-
     <div class="hero-content">
-
       <img src="logo.png" alt="Logo AMG Sports" class="hero-logo">
-
       <h1>
         AMG <span>Sports</span>
       </h1>
-
       <p>
         Seu melhor desempenho, nossa missão.
       </p>
-
       <div class="hero-buttons">
-
-        <button class="btn-primary">
+        <button class="btn-primary" onclick="location.href='#produtos'">
           Comprar Agora
         </button>
-
-        <button class="btn-secondary">
+        <button class="btn-secondary" onclick="location.href='#produtos'">
           Ver Coleção
         </button>
-
       </div>
-
     </div>
-
   </section>
 
   <!-- SOBRE -->
-
   <section class="about" id="sobre">
-
     <h2 class="title">
       Sobre a AMG Sports
     </h2>
-
     <div class="about-content">
-
       <p>
         A AMG Sports nasceu com o objetivo de transformar o desempenho esportivo
         através de produtos modernos, resistentes e desenvolvidos para atletas
         que buscam superar seus limites.
       </p>
-
       <p>
         Nossa empresa trabalha com inovação, estilo e tecnologia para entregar
         a melhor experiência esportiva para nossos clientes.
       </p>
-
     </div>
-
   </section>
 
   <!-- OBJETIVOS -->
-
   <section class="goals" id="objetivos">
-
     <h2 class="title">
       Nossos Objetivos
     </h2>
-
     <div class="goals-container">
-
       <div class="goal-box">
-
         <i class="fa-solid fa-medal"></i>
-
-        <h3>
-          Qualidade
-        </h3>
-
-        <p>
-          Produtos premium desenvolvidos com alto padrão de desempenho.
-        </p>
-
+        <h3>Qualidade</h3>
+        <p>Produtos premium desenvolvidos com alto padrão de desempenho.</p>
       </div>
-
       <div class="goal-box">
-
         <i class="fa-solid fa-chart-line"></i>
-
-        <h3>
-          Lucro
-        </h3>
-
-        <p>
-          Crescimento sustentável com foco em inovação e expansão.
-        </p>
-
+        <h3>Lucro</h3>
+        <p>Crescimento sustentável com foco em inovação e expansão.</p>
       </div>
-
       <div class="goal-box">
-
         <i class="fa-solid fa-bolt"></i>
-
-        <h3>
-          Performance
-        </h3>
-
-        <p>
-          Desenvolver equipamentos para elevar o nível dos atletas.
-        </p>
-
+        <h3>Performance</h3>
+        <p>Desenvolver equipamentos para elevar o nível dos atletas.</p>
       </div>
-
     </div>
-
   </section>
 
   <!-- PRODUTOS -->
-
   <section class="products" id="produtos">
-
     <h2 class="title">
       Produtos em Destaque
     </h2>
 
     <div class="products-container">
 
-      <div class="card">
-
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
-        alt="Tênis AMG Runner">
-
+      <!-- Produto 1 -->
+      <div class="card" data-name="Tênis AMG Runner" data-price="499.90">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" alt="Tênis AMG Runner">
         <div class="card-content">
-
           <h3>Tênis AMG Runner</h3>
-
-          <p>
-            Máximo conforto e desempenho esportivo.
-          </p>
-
-          <span class="price">
-            R$ 499,90
-          </span>
-
-          <button>
-            Comprar
-          </button>
-
+          <p>Máximo conforto e desempenho esportivo.</p>
+          <span class="price">R$ 499,90</span>
+          <button class="add-cart">Comprar</button>
         </div>
-
       </div>
 
-      <div class="card">
-
-        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200&auto=format&fit=crop"
-        alt="Camisa AMG Fit">
-
+      <!-- Produto 2 -->
+      <div class="card" data-name="Camisa AMG Fit" data-price="149.90">
+        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200&auto=format&fit=crop" alt="Camisa AMG Fit">
         <div class="card-content">
-
           <h3>Camisa AMG Fit</h3>
-
-          <p>
-            Tecnologia dry-fit premium.
-          </p>
-
-          <span class="price">
-            R$ 149,90
-          </span>
-
-          <button>
-            Comprar
-          </button>
-
+          <p>Tecnologia dry-fit premium.</p>
+          <span class="price">R$ 149,90</span>
+          <button class="add-cart">Comprar</button>
         </div>
-
       </div>
 
-      <div class="card">
-
-        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop"
-        alt="Kit Fitness AMG">
-
+      <!-- Produto 3 -->
+      <div class="card" data-name="Kit Fitness AMG" data-price="299.90">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop" alt="Kit Fitness AMG">
         <div class="card-content">
-
           <h3>Kit Fitness AMG</h3>
-
-          <p>
-            Equipamentos completos para treino.
-          </p>
-
-          <span class="price">
-            R$ 299,90
-          </span>
-
-          <button>
-            Comprar
-          </button>
-
+          <p>Equipamentos completos para treino.</p>
+          <span class="price">R$ 299,90</span>
+          <button class="add-cart">Comprar</button>
         </div>
-
       </div>
 
     </div>
-
   </section>
 
   <!-- FOOTER -->
-
   <footer>
-
     <p>
       © 2026 AMG Sports - Todos os direitos reservados.
     </p>
-
   </footer>
 
   <!-- JS -->
-<script src="amg.js"></script>
+  <script src="amg.js"></script>
 
 </body>
 </html>
