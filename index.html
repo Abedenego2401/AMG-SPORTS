@@ -1,269 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pagamento - AMG Sports</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
-body{background:#0b0b0f;color:#fff;min-height:100vh}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;background:#111;border-bottom:1px solid #222}
-.logo{font-size:22px;font-weight:bold}.logo span{color:#0066ff}
-header a{color:#fff;text-decoration:none;font-size:14px}
-main{max-width:1000px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start}
-@media(max-width:800px){main{grid-template-columns:1fr}}
-.box{background:#15151b;border-radius:12px;padding:22px;margin-bottom:20px}
-h2{font-size:18px;margin-bottom:16px}
-label{display:block;font-size:13px;color:#bbb;margin:12px 0 5px}
-input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#0b0b0f;color:#fff;font-size:15px}
-input:focus,select:focus{outline:none;border-color:#0066ff}
-input[type=checkbox]{width:auto;margin-right:8px}
-.chk{display:flex;align-items:center;color:#ddd;font-size:14px;margin-top:14px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.method{padding:14px 8px;text-align:center;border:2px solid #333;border-radius:10px;cursor:pointer;font-size:14px}
-.method i{display:block;font-size:22px;margin-bottom:6px}
-.method.active{border-color:#0066ff;background:#0a1a33}
-.panel{display:none;margin-top:16px}.panel.active{display:block}
-.pix{text-align:center}
-.pix svg{width:180px;height:180px;background:#fff;padding:8px;border-radius:8px}
-.code{word-break:break-all;background:#0b0b0f;border:1px dashed #444;padding:10px;border-radius:8px;font-size:12px;color:#ccc;margin:12px 0;text-align:left}
-.btn{width:100%;padding:14px;border:none;border-radius:8px;background:#0066ff;color:#fff;font-size:16px;cursor:pointer;margin-top:6px}
-.btn.alt{background:#2a2a35;width:auto;padding:10px 18px;font-size:14px;margin:0}
-.item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #26262e;font-size:14px}
-.total{display:flex;justify-content:space-between;font-size:20px;margin-top:14px}
-.erro{color:#ff6b6b;font-size:13px;margin:12px 0 4px;min-height:16px}
-.aviso{font-size:12px;color:#999;margin-top:14px;line-height:1.5}
-.ok{text-align:center;padding:30px 10px;grid-column:1/-1}.ok i{font-size:60px;color:#00cc66}
-.ok h2{margin:16px 0 8px;font-size:26px}.ok p{color:#bbb;margin:6px 0}
-.ok a{display:inline-block;margin-top:20px;text-decoration:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMG Sports</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
-<header>
-  <div class="logo">AMG <span>Sports</span></div>
-  <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Voltar à loja</a>
-</header>
-
-<main id="app">
-
-  <section>
-    <div class="box">
-      <h2>Seus dados</h2>
-      <label for="nome">Nome completo</label>
-      <input id="nome" autocomplete="name">
-      <label for="tel">Telefone</label>
-      <input id="tel" inputmode="numeric" placeholder="(11) 99999-9999">
-      <label for="end">Endereço de entrega</label>
-      <input id="end" placeholder="Rua, número, bairro, cidade">
-    </div>
-
-    <div class="box">
-      <h2>Forma de pagamento</h2>
-      <div class="methods">
-        <div class="method active" data-m="cartao"><i class="fa-solid fa-credit-card"></i>Cartão</div>
-        <div class="method" data-m="pix"><i class="fa-brands fa-pix"></i>Pix</div>
-        <div class="method" data-m="dinheiro"><i class="fa-solid fa-money-bill-wave"></i>Dinheiro</div>
-      </div>
-
-      <div class="panel active" id="p-cartao">
-        <label for="tipo">Tipo do cartão</label>
-        <select id="tipo"><option value="credito">Crédito</option><option value="debito">Débito</option></select>
-        <label for="num">Número do cartão</label>
-        <input id="num" inputmode="numeric" placeholder="0000 0000 0000 0000" autocomplete="off">
-        <label for="titular">Nome impresso no cartão</label>
-        <input id="titular" autocomplete="off">
-        <div class="row">
-          <div><label for="val">Validade</label><input id="val" inputmode="numeric" placeholder="MM/AA" autocomplete="off"></div>
-          <div><label for="cvv">CVV</label><input id="cvv" inputmode="numeric" placeholder="123" autocomplete="off"></div>
-        </div>
-        <div id="parcWrap"><label for="parc">Parcelas</label><select id="parc"></select></div>
-      </div>
-
-      <div class="panel pix" id="p-pix">
-        <p style="color:#bbb;font-size:14px;margin-bottom:12px">Escaneie o QR Code ou use o código Pix copia e cola:</p>
-        <div id="qr"></div>
-        <div class="code" id="pixcode">00020126360014BR.GOV.BCB.PIX0114amgsports-demo5204000053039865802BR5909AMG SPORTS6009SAO PAULO62070503***6304ABCD</div>
-        <button class="btn alt" id="copiar" type="button">Copiar código</button>
-        <p class="aviso">QR Code e código ilustrativos (simulação).</p>
-      </div>
-
-      <div class="panel" id="p-dinheiro">
-        <p style="color:#ddd;font-size:14px;line-height:1.5">Você paga em dinheiro ao receber o pedido.</p>
-        <label class="chk"><input type="checkbox" id="precisaTroco"> Preciso de troco</label>
-        <div id="trocoBox" style="display:none">
-          <label for="troco">Troco para quanto?</label>
-          <input id="troco" inputmode="decimal" placeholder="Ex.: 600,00">
-        </div>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo AMG Sports" class="logo-img">
+      <div class="logo">
+        AMG <span>Sports</span>
       </div>
     </div>
 
-    <p class="erro" id="erro"></p>
-    <button class="btn" id="confirmar" type="button">Confirmar pedido</button>
-    <p class="aviso"><i class="fa-solid fa-circle-info"></i> Projeto escolar: nenhum pagamento real é processado e nenhum dado é enviado ou salvo. Para testar o cartão, use 4111 1111 1111 1111, qualquer validade futura e qualquer CVV.</p>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#objetivos">Objetivos</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#beneficios">Benefícios</a>
+      <a href="#equipe">Equipe</a>
+      <a href="#contato">Contato</a>
+    </nav>
+
+    <!-- BOTÃO DO CARRINHO NO HEADER -->
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <button id="btn-carrinho" style="background: #0066ff; border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-cart-shopping"></i> Carrinho (<span id="cart-count">0</span>)
+      </button>
+      <div class="menu-mobile">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <img src="logo.png" alt="Logo AMG Sports" class="hero-logo">
+      <h1>
+        AMG <span>Sports</span>
+      </h1>
+      <p>
+        Seu melhor desempenho, nossa missão.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="location.href='#produtos'">
+          Comprar Agora
+        </button>
+        <button class="btn-secondary" onclick="location.href='#produtos'">
+          Ver Coleção
+        </button>
+      </div>
+    </div>
   </section>
 
-  <aside class="box">
-    <h2>Resumo do pedido</h2>
-    <div id="itens"></div>
-    <div class="total"><span>Total</span><strong id="total">R$ 0,00</strong></div>
-  </aside>
+  <!-- SOBRE -->
+  <section class="about" id="sobre">
+    <h2 class="title">
+      Sobre a AMG Sports
+    </h2>
+    <div class="about-content">
+      <p>
+        A AMG Sports nasceu com o objetivo de transformar o desempenho esportivo
+        através de produtos modernos, resistentes e desenvolvidos para atletas
+        que buscam superar seus limites.
+      </p>
+      <p>
+        Nossa empresa trabalha com inovação, estilo e tecnologia para entregar
+        a melhor experiência esportiva para nossos clientes.
+      </p>
+    </div>
+  </section>
 
-</main>
+  <!-- OBJETIVOS -->
+  <section class="goals" id="objetivos">
+    <h2 class="title">
+      Nossos Objetivos
+    </h2>
+    <div class="goals-container">
+      <div class="goal-box">
+        <i class="fa-solid fa-medal"></i>
+        <h3>Qualidade</h3>
+        <p>Produtos premium desenvolvidos com alto padrão de desempenho.</p>
+      </div>
+      <div class="goal-box">
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>Lucro</h3>
+        <p>Crescimento sustentável com foco em inovação e expansão.</p>
+      </div>
+      <div class="goal-box">
+        <i class="fa-solid fa-bolt"></i>
+        <h3>Performance</h3>
+        <p>Desenvolver equipamentos para elevar o nível dos atletas.</p>
+      </div>
+    </div>
+  </section>
 
-<script>
-const $ = (id) => document.getElementById(id);
-const brl = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
-  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  <!-- PRODUTOS (Com atributos data para o carrinho) -->
+  <section class="products" id="produtos">
+    <h2 class="title">
+      Produtos em Destaque
+    </h2>
 
-let cart = [];
-try { cart = JSON.parse(localStorage.getItem("amg-cart")) || []; } catch (e) { cart = []; }
-const total = cart.reduce((s, i) => s + i.preco * i.qtd, 0);
+    <div class="products-container">
 
-if (!cart.length) {
-  $("app").innerHTML = `<div class="ok"><i class="fa-solid fa-cart-shopping" style="color:#888"></i>
-    <h2>Seu carrinho está vazio</h2><p>Adicione produtos antes de pagar.</p>
-    <a class="btn" href="index.html" style="max-width:260px">Voltar à loja</a></div>`;
-} else {
-  iniciar();
-}
+      <div class="card" data-name="Tênis AMG Runner" data-price="499.90">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" alt="Tênis AMG Runner">
+        <div class="card-content">
+          <h3>Tênis AMG Runner</h3>
+          <p>Máximo conforto e desempenho esportivo.</p>
+          <span class="price">R$ 499,90</span>
+          <button class="add-cart">Comprar</button>
+        </div>
+      </div>
 
-function iniciar() {
-  // Resumo
-  $("itens").innerHTML = cart.map((i) =>
-    `<div class="item"><span>${i.qtd}x ${esc(i.nome)}</span><span>${brl(i.preco * i.qtd)}</span></div>`).join("");
-  $("total").textContent = brl(total);
+      <div class="card" data-name="Camisa AMG Fit" data-price="149.90">
+        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200&auto=format&fit=crop" alt="Camisa AMG Fit">
+        <div class="card-content">
+          <h3>Camisa AMG Fit</h3>
+          <p>Tecnologia dry-fit premium.</p>
+          <span class="price">R$ 149,90</span>
+          <button class="add-cart">Comprar</button>
+        </div>
+      </div>
 
-  // Parcelas
-  for (let n = 1; n <= 6; n++) {
-    const o = document.createElement("option");
-    o.value = n;
-    o.textContent = `${n}x de ${brl(total / n)} sem juros`;
-    $("parc").appendChild(o);
-  }
+      <div class="card" data-name="Kit Fitness AMG" data-price="299.90">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop" alt="Kit Fitness AMG">
+        <div class="card-content">
+          <h3>Kit Fitness AMG</h3>
+          <p>Equipamentos completos para treino.</p>
+          <span class="price">R$ 299,90</span>
+          <button class="add-cart">Comprar</button>
+        </div>
+      </div>
 
-  // QR Code ilustrativo
-  (function () {
-    const N = 25; let seed = 42;
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    let s = `<svg viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges">`;
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
-      const f = (x < 7 && y < 7) || (x >= N - 7 && y < 7) || (x < 7 && y >= N - 7);
-      let on;
-      if (f) {
-        const fx = x < 7 ? x : x - (N - 7), fy = y < 7 ? y : y - (N - 7);
-        on = fx === 0 || fx === 6 || fy === 0 || fy === 6 || (fx >= 2 && fx <= 4 && fy >= 2 && fy <= 4);
-      } else on = rnd() > 0.5;
-      if (on) s += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
-    }
-    $("qr").innerHTML = s + "</svg>";
-  })();
+    </div>
+  </section>
 
-  // Forma de pagamento
-  let metodo = "cartao";
-  document.querySelectorAll(".method").forEach((m) => {
-    m.addEventListener("click", () => {
-      metodo = m.dataset.m;
-      document.querySelectorAll(".method").forEach((x) => x.classList.toggle("active", x === m));
-      document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("active", p.id === "p-" + metodo));
-      $("erro").textContent = "";
-    });
-  });
-  $("tipo").addEventListener("change", () => {
-    $("parcWrap").style.display = $("tipo").value === "credito" ? "block" : "none";
-  });
-  $("precisaTroco").addEventListener("change", (e) => {
-    $("trocoBox").style.display = e.target.checked ? "block" : "none";
-  });
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      © 2026 AMG Sports - Todos os direitos reservados.
+    </p>
+  </footer>
 
-  // Máscaras
-  $("tel").addEventListener("input", (e) => {
-    const d = e.target.value.replace(/\D/g, "").slice(0, 11);
-    const c = d.length > 10 ? 7 : 6;
-    e.target.value = d.length > 6 ? `(${d.slice(0, 2)}) ${d.slice(2, c)}-${d.slice(c)}`
-      : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
-  });
-  $("num").addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
-  });
-  $("val").addEventListener("input", (e) => {
-    const d = e.target.value.replace(/\D/g, "").slice(0, 4);
-    e.target.value = d.length > 2 ? d.slice(0, 2) + "/" + d.slice(2) : d;
-  });
-  $("cvv").addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4);
-  });
-
-  // Copiar Pix
-  $("copiar").addEventListener("click", () => {
-    const txt = $("pixcode").textContent;
-    const ok = () => { $("copiar").textContent = "Copiado!"; setTimeout(() => $("copiar").textContent = "Copiar código", 2000); };
-    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok).catch(() => {});
-    else ok();
-  });
-
-  const luhn = (n) => {
-    let s = 0, alt = false;
-    for (let i = n.length - 1; i >= 0; i--) {
-      let d = +n[i];
-      if (alt) { d *= 2; if (d > 9) d -= 9; }
-      s += d; alt = !alt;
-    }
-    return s % 10 === 0;
-  };
-
-  // Confirmar
-  $("confirmar").addEventListener("click", () => {
-    const erro = (m) => { $("erro").textContent = m; };
-    $("erro").textContent = "";
-
-    if ($("nome").value.trim().length < 3) return erro("Informe seu nome completo.");
-    if ($("tel").value.replace(/\D/g, "").length < 10) return erro("Informe um telefone válido.");
-    if ($("end").value.trim().length < 8) return erro("Informe o endereço de entrega.");
-
-    let detalhe = "";
-
-    if (metodo === "cartao") {
-      const num = $("num").value.replace(/\D/g, "");
-      if (num.length < 13 || !luhn(num)) return erro("Número de cartão inválido.");
-      if ($("titular").value.trim().length < 3) return erro("Informe o nome impresso no cartão.");
-      const v = $("val").value, m = +v.slice(0, 2), a = 2000 + +v.slice(3, 5), hoje = new Date();
-      if (v.length < 5 || m < 1 || m > 12 || a < hoje.getFullYear() ||
-          (a === hoje.getFullYear() && m < hoje.getMonth() + 1)) return erro("Validade inválida ou cartão vencido.");
-      if ($("cvv").value.length < 3) return erro("CVV inválido.");
-      const cred = $("tipo").value === "credito";
-      const p = +$("parc").value;
-      detalhe = cred ? `Cartão de crédito final ${num.slice(-4)} em ${p}x de ${brl(total / p)}`
-                     : `Cartão de débito final ${num.slice(-4)}`;
-    } else if (metodo === "pix") {
-      detalhe = "Pix (pagamento simulado)";
-    } else {
-      detalhe = "Dinheiro na entrega";
-      if ($("precisaTroco").checked) {
-        const v = parseFloat($("troco").value.replace(/\./g, "").replace(",", "."));
-        if (!(v >= total)) return erro(`O valor para troco deve ser de pelo menos ${brl(total)}.`);
-        detalhe += ` (troco para ${brl(v)})`;
-      }
-    }
-
-    const pedido = Math.floor(10000 + Math.random() * 90000);
-    const nome = $("nome").value.trim().split(" ")[0];
-    try { localStorage.removeItem("amg-cart"); } catch (e) {}
-
-    $("app").innerHTML = `<div class="ok"><i class="fa-solid fa-circle-check"></i>
-      <h2>Pedido confirmado!</h2>
-      <p>Obrigado pela compra, ${esc(nome)}.</p>
-      <p>Pedido nº <strong>${pedido}</strong></p>
-      <p>${esc(detalhe)}</p>
-      <p>Total: <strong>${brl(total)}</strong></p>
-      <a class="btn" href="index.html" style="max-width:260px">Voltar à loja</a></div>`;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-</script>
+  <!-- JS -->
+  <script src="amg.js"></script>
 
 </body>
 </html>
