@@ -1,1 +1,230 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finalizar Compra - AMG Sports</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout {
+      max-width: 850px;
+      margin: 120px auto 50px;
+      padding: 30px;
+      background: #111;
+      border-radius: 18px;
+    }
+
+    .checkout h1 {
+      color: #0066ff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .produto {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .produto button {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .total {
+      font-size: 25px;
+      text-align: right;
+      margin: 25px 0;
+      font-weight: bold;
+    }
+
+    .checkout h2 {
+      color: #0066ff;
+      margin: 25px 0 15px;
+    }
+
+    .pagamento-opcao {
+      display: block;
+      padding: 15px;
+      background: #050505;
+      border: 1px solid #333;
+      border-radius: 8px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+
+    .pagamento-opcao:has(input:checked) {
+      border-color: #0066ff;
+    }
+
+    .checkout button.finalizar {
+      width: 100%;
+      padding: 16px;
+      background: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #resultado {
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    .voltar {
+      display: block;
+      text-align: center;
+      color: #0066ff;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="checkout">
+    <h1>Finalizar Compra</h1>
+
+    <h2>Seu carrinho</h2>
+    <div id="lista-produtos"></div>
+
+    <div class="total">
+      Total: <span id="valor-total">R$ 0,00</span>
+    </div>
+
+    <h2>Forma de pagamento</h2>
+
+    <label class="pagamento-opcao">
+      <input type="radio" name="pagamento" value="Mercado Pago" checked>
+      💙 Mercado Pago
+    </label>
+
+    <label class="pagamento-opcao">
+      <input type="radio" name="pagamento" value="Pix">
+      ⚡ Pix (simulado)
+    </label>
+
+    <label class="pagamento-opcao">
+      <input type="radio" name="pagamento" value="Cartão de crédito">
+      💳 Cartão de crédito (simulado)
+    </label>
+
+    <label class="pagamento-opcao">
+      <input type="radio" name="pagamento" value="Cartão de débito">
+      💳 Cartão de débito (simulado)
+    </label>
+
+    <button class="finalizar" id="finalizar">
+      Confirmar compra
+    </button>
+
+    <div id="resultado" role="status" aria-live="polite"></div>
+
+    <a href="index.html" class="voltar">← Voltar à loja</a>
+  </main>
+
+  <script>
+    let carrinho = [];
+
+    try {
+      carrinho = JSON.parse(localStorage.getItem("amg-cart")) || [];
+      if (!Array.isArray(carrinho)) carrinho = [];
+    } catch (e) {
+      carrinho = [];
+    }
+
+    const lista = document.getElementById("lista-produtos");
+    const totalEl = document.getElementById("valor-total");
+    const resultado = document.getElementById("resultado");
+    const finalizar = document.getElementById("finalizar");
+
+    function formatar(valor) {
+      return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function atualizarCarrinho() {
+      lista.innerHTML = "";
+
+      let total = 0;
+
+      carrinho.forEach((item, index) => {
+        const preco = Number(item.preco);
+        const qtd = Number(item.qtd);
+
+        if (!item.nome || !Number.isFinite(preco) ||
+            !Number.isSafeInteger(qtd) || qtd < 1 ||
+            preco < 0) return;
+
+        total += preco * qtd;
+
+        const produto = document.createElement("div");
+        produto.className = "produto";
+
+        const descricao = document.createElement("span");
+        descricao.textContent =
+          `${item.nome} x${qtd} - ${formatar(preco * qtd)}`;
+
+        const remover = document.createElement("button");
+        remover.textContent = "Remover";
+        remover.addEventListener("click", () => {
+          carrinho.splice(index, 1);
+          salvar();
+          resultado.textContent = "";
+          atualizarCarrinho();
+        });
+
+        produto.append(descricao, remover);
+        lista.appendChild(produto);
+      });
+
+      totalEl.textContent = formatar(total);
+      finalizar.disabled = carrinho.length === 0;
+      finalizar.style.opacity = finalizar.disabled ? "0.5" : "1";
+    }
+
+    function salvar() {
+      localStorage.setItem("amg-cart", JSON.stringify(carrinho));
+    }
+
+    finalizar.addEventListener("click", () => {
+      if (carrinho.length === 0) return;
+
+      const forma = document.querySelector(
+        'input[name="pagamento"]:checked'
+      ).value;
+
+      resultado.style.color = "#00cc66";
+      resultado.textContent =
+        "✓ Compra simulada realizada com sucesso! " +
+        "Forma de pagamento: " + forma +
+        ". Obrigado por comprar na AMG Sports!";
+
+      carrinho = [];
+      salvar();
+      atualizarCarrinho();
+
+      document.getElementById("finalizar").textContent =
+        "Compra concluída!";
+    });
+
+    atualizarCarrinho();
+  </script>
+
+</body>
+</html>
+
