@@ -8,6 +8,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="novas-secoes.css">
 
   <!-- FONT AWESOME -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,7 +25,7 @@
       </div>
     </div>
 
-    <nav>
+    <nav id="menu">
       <a href="#inicio">Início</a>
       <a href="#sobre">Sobre</a>
       <a href="#objetivos">Objetivos</a>
@@ -39,7 +40,7 @@
       <button id="btn-carrinho" style="background: #0066ff; border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
         <i class="fa-solid fa-cart-shopping"></i> Carrinho (<span id="cart-count">0</span>)
       </button>
-      <div class="menu-mobile">
+      <div class="menu-mobile" id="menu-mobile">
         <i class="fa-solid fa-bars"></i>
       </div>
     </div>
@@ -151,6 +152,108 @@
       </div>
 
     </div>
+  </section>
+
+  <!-- BENEFÍCIOS -->
+  <section class="benefits" id="beneficios">
+    <h2 class="title">
+      Benefícios de comprar na AMG Sports
+    </h2>
+    <div class="benefits-container">
+      <div class="benefit-box">
+        <i class="fa-solid fa-truck-fast"></i>
+        <h3>Entrega rápida</h3>
+        <p>Seu pedido chega com agilidade, onde você estiver.</p>
+      </div>
+      <div class="benefit-box">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>Compra segura</h3>
+        <p>Seus dados protegidos do carrinho até a entrega.</p>
+      </div>
+      <div class="benefit-box">
+        <i class="fa-solid fa-rotate-left"></i>
+        <h3>Troca facilitada</h3>
+        <p>Não serviu? Você troca sem complicação.</p>
+      </div>
+      <div class="benefit-box">
+        <i class="fa-solid fa-medal"></i>
+        <h3>Qualidade garantida</h3>
+        <p>Materiais resistentes, feitos para treinos intensos.</p>
+      </div>
+      <div class="benefit-box">
+        <i class="fa-solid fa-credit-card"></i>
+        <h3>Pagamento flexível</h3>
+        <p>Várias formas de pagar, do jeito que for melhor para você.</p>
+      </div>
+      <div class="benefit-box">
+        <i class="fa-solid fa-headset"></i>
+        <h3>Atendimento próximo</h3>
+        <p>Nossa equipe responde suas dúvidas pelo formulário de contato.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPE -->
+  <section class="team" id="equipe">
+    <h2 class="title">
+      Nossa Equipe
+    </h2>
+    <div class="team-container">
+      <div class="team-card">
+        <div class="avatar">LH</div>
+        <h3>Leonardo Hiroshi</h3>
+        <p>Integrante da equipe</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">BS</div>
+        <h3>Bruno Silva</h3>
+        <p>Integrante da equipe</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">RG</div>
+        <h3>Robson Godoy</h3>
+        <p>Integrante da equipe</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">JS</div>
+        <h3>João Santana</h3>
+        <p>Integrante da equipe</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">RA</div>
+        <h3>Ricardo Alves</h3>
+        <p>Integrante da equipe</p>
+      </div>
+      <div class="team-card">
+        <div class="avatar">HG</div>
+        <h3>Higor Gabriel</h3>
+        <p>Integrante da equipe</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="contact" id="contato">
+    <h2 class="title">
+      Fale com a AMG Sports
+    </h2>
+    <p class="contact-intro">
+      Envie sua dúvida, sugestão ou comentário. A mensagem chega direto para a nossa equipe.
+    </p>
+
+    <form id="form-contato" class="contact-form" novalidate>
+      <label for="c-nome">Nome</label>
+      <input type="text" id="c-nome" name="nome" placeholder="Seu nome" required>
+
+      <label for="c-email">Seu e-mail</label>
+      <input type="email" id="c-email" name="email" placeholder="voce@email.com" required>
+
+      <label for="c-mensagem">Comentário</label>
+      <textarea id="c-mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem" required></textarea>
+
+      <button type="submit" class="btn-primary" id="btn-enviar">Enviar mensagem</button>
+      <p id="form-status" role="status" aria-live="polite"></p>
+    </form>
   </section>
 
   <!-- FOOTER -->
