@@ -85,24 +85,15 @@
 
       <div class="campo">
         <label for="email">E-mail</label>
-        <input
-          type="email"
-          id="email"
-          required
-          autocomplete="email"
-          placeholder="Digite seu e-mail"
-        >
+        <input type="email" id="email" required
+          autocomplete="email" placeholder="Digite seu e-mail">
       </div>
 
       <div class="campo">
         <label for="senha">Senha</label>
-        <input
-          type="password"
-          id="senha"
-          required
+        <input type="password" id="senha" required
           autocomplete="current-password"
-          placeholder="Digite sua senha"
-        >
+          placeholder="Digite sua senha">
       </div>
 
       <button type="submit" id="btn-login">
@@ -116,9 +107,7 @@
     <div class="links">
       Ainda não tem conta?
       <a href="cadastro.html">Criar conta</a>
-
       <br>
-
       <a href="index.html">← Voltar à loja</a>
     </div>
   </main>
@@ -127,11 +116,12 @@
     import { createClient } from
       "https://esm.sh/@supabase/supabase-js@2";
 
+    // PROJETO CORRETO AMG-SPORTS
     const SUPABASE_URL =
-      "https://fgdxxygtjjmmtummldne.supabase.co";
+      "https://yjlbkermtbnbrhfnbywy.supabase.co";
 
     const SUPABASE_KEY =
-      "sb_publishable_qf6-r8Ucqxgz0J1ABzEHug_YxGc8MP8";
+      "sb_publishable_nbg_3n1Z9u3fs4DM_i3j4Q_W03ULN4E";
 
     const supabase = createClient(
       SUPABASE_URL,
@@ -184,4 +174,3 @@
 
 </body>
 </html>
-
