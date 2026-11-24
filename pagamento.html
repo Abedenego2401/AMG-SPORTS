@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finalizar Compra - AMG Sports</title>
   <link rel="stylesheet" href="style.css">
+
   <style>
     .checkout {
       max-width: 850px;
@@ -50,6 +51,20 @@
       margin: 25px 0 15px;
     }
 
+    .endereco-box {
+      background: #050505;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 18px;
+      line-height: 1.8;
+    }
+
+    .endereco-box a {
+      color: #1680ff;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
     .pagamento-opcao {
       display: block;
       padding: 15px;
@@ -75,6 +90,11 @@
       font-weight: bold;
       cursor: pointer;
       margin-top: 20px;
+    }
+
+    .checkout button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     #resultado {
@@ -104,11 +124,17 @@
       Total: <span id="valor-total">R$ 0,00</span>
     </div>
 
+    <h2>Endereço de entrega</h2>
+
+    <div class="endereco-box" id="area-endereco">
+      Carregando seu endereço...
+    </div>
+
     <h2>Forma de pagamento</h2>
 
     <label class="pagamento-opcao">
       <input type="radio" name="pagamento" value="Mercado Pago" checked>
-      💙 Mercado Pago
+      💙 Mercado Pago (simulado)
     </label>
 
     <label class="pagamento-opcao">
@@ -126,7 +152,7 @@
       💳 Cartão de débito (simulado)
     </label>
 
-    <button class="finalizar" id="finalizar">
+    <button class="finalizar" id="finalizar" disabled>
       Confirmar compra
     </button>
 
@@ -135,20 +161,44 @@
     <a href="index.html" class="voltar">← Voltar à loja</a>
   </main>
 
-  <script>
-    let carrinho = [];
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
 
-    try {
-      carrinho = JSON.parse(localStorage.getItem("amg-cart")) || [];
-      if (!Array.isArray(carrinho)) carrinho = [];
-    } catch (e) {
-      carrinho = [];
-    }
+    const SUPABASE_URL =
+      "https://yjlbkermtbnbrhfnbywy.supabase.co";
 
+    const SUPABASE_KEY =
+      "sb_publishable_nbg_3n1Z9u3fs4DM_i3j4Q_W03ULN4E";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    // ELEMENTOS
     const lista = document.getElementById("lista-produtos");
     const totalEl = document.getElementById("valor-total");
     const resultado = document.getElementById("resultado");
     const finalizar = document.getElementById("finalizar");
+    const areaEndereco = document.getElementById("area-endereco");
+
+    // CARRINHO
+    let carrinho = [];
+
+    try {
+      carrinho = JSON.parse(
+        localStorage.getItem("amg-cart")
+      ) || [];
+
+      if (!Array.isArray(carrinho)) {
+        carrinho = [];
+      }
+    } catch (e) {
+      carrinho = [];
+    }
+
+    let enderecoCarregado = false;
 
     function formatar(valor) {
       return valor.toLocaleString("pt-BR", {
@@ -157,30 +207,47 @@
       });
     }
 
+    function salvar() {
+      localStorage.setItem(
+        "amg-cart",
+        JSON.stringify(carrinho)
+      );
+    }
+
+    // ATUALIZAR CARRINHO
     function atualizarCarrinho() {
       lista.innerHTML = "";
 
       let total = 0;
+      let quantidadeValida = 0;
 
       carrinho.forEach((item, index) => {
         const preco = Number(item.preco);
         const qtd = Number(item.qtd);
 
-        if (!item.nome || !Number.isFinite(preco) ||
-            !Number.isSafeInteger(qtd) || qtd < 1 ||
-            preco < 0) return;
+        if (
+          !item.nome ||
+          !Number.isFinite(preco) ||
+          !Number.isSafeInteger(qtd) ||
+          qtd < 1 ||
+          preco < 0
+        ) return;
 
+        quantidadeValida++;
         total += preco * qtd;
 
         const produto = document.createElement("div");
         produto.className = "produto";
 
         const descricao = document.createElement("span");
+
         descricao.textContent =
           `${item.nome} x${qtd} - ${formatar(preco * qtd)}`;
 
         const remover = document.createElement("button");
+
         remover.textContent = "Remover";
+
         remover.addEventListener("click", () => {
           carrinho.splice(index, 1);
           salvar();
@@ -192,23 +259,104 @@
         lista.appendChild(produto);
       });
 
+      if (quantidadeValida === 0) {
+        lista.textContent = "Seu carrinho está vazio.";
+      }
+
       totalEl.textContent = formatar(total);
-      finalizar.disabled = carrinho.length === 0;
-      finalizar.style.opacity = finalizar.disabled ? "0.5" : "1";
+
+      finalizar.disabled =
+        quantidadeValida === 0 || !enderecoCarregado;
     }
 
-    function salvar() {
-      localStorage.setItem("amg-cart", JSON.stringify(carrinho));
+    // BUSCAR ENDEREÇO DO CLIENTE
+    async function carregarEndereco() {
+      try {
+        const { data: usuarioData, error: erroUsuario } =
+          await supabase.auth.getUser();
+
+        if (erroUsuario || !usuarioData.user) {
+          areaEndereco.textContent =
+            "Você precisa entrar na sua conta para continuar.";
+
+          const link = document.createElement("a");
+          link.href = "login.html";
+          link.textContent = "Fazer login";
+
+          areaEndereco.appendChild(link);
+          return;
+        }
+
+        const usuario = usuarioData.user;
+
+        const { data, error } = await supabase
+          .from("addresses")
+          .select("cep, rua, numero, complemento, bairro, cidade, estado")
+          .eq("user_id", usuario.id)
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          areaEndereco.textContent =
+            "Você ainda não cadastrou um endereço.";
+
+          const link = document.createElement("a");
+          link.href = "endereco.html";
+          link.textContent = "Cadastrar meu endereço";
+
+          areaEndereco.appendChild(link);
+          return;
+        }
+
+        const endereco = data[0];
+
+        const linhas = [
+          `${endereco.rua}, ${endereco.numero}`,
+          endereco.complemento,
+          endereco.bairro,
+          `${endereco.cidade} - ${endereco.estado}`,
+          `CEP: ${endereco.cep}`
+        ].filter(Boolean);
+
+        areaEndereco.replaceChildren();
+
+        linhas.forEach((linha) => {
+          const div = document.createElement("div");
+          div.textContent = linha;
+          areaEndereco.appendChild(div);
+        });
+
+        const link = document.createElement("a");
+        link.href = "endereco.html";
+        link.textContent = "Alterar endereço";
+
+        areaEndereco.appendChild(link);
+
+        enderecoCarregado = true;
+
+      } catch (error) {
+        areaEndereco.textContent =
+          "Não foi possível carregar seu endereço: " +
+          error.message;
+      }
+
+      atualizarCarrinho();
     }
 
+    // FINALIZAR COMPRA SIMULADA
     finalizar.addEventListener("click", () => {
-      if (carrinho.length === 0) return;
+      if (carrinho.length === 0 || !enderecoCarregado) {
+        return;
+      }
 
       const forma = document.querySelector(
         'input[name="pagamento"]:checked'
       ).value;
 
       resultado.style.color = "#00cc66";
+
       resultado.textContent =
         "✓ Compra simulada realizada com sucesso! " +
         "Forma de pagamento: " + forma +
@@ -218,13 +366,14 @@
       salvar();
       atualizarCarrinho();
 
-      document.getElementById("finalizar").textContent =
-        "Compra concluída!";
+      finalizar.textContent = "Compra concluída!";
     });
 
+    // INICIAR
     atualizarCarrinho();
+    carregarEndereco();
+
   </script>
 
 </body>
 </html>
-
