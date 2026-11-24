@@ -51,6 +51,11 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
     #mensagem {
       text-align: center;
       margin-top: 15px;
@@ -169,9 +174,14 @@
         if (error) throw error;
 
         mensagem.style.color = "#00cc66";
-        mensagem.textContent = "Endereço salvo com sucesso!";
+        mensagem.textContent = "Endereço salvo com sucesso! Voltando para a loja...";
 
         formulario.reset();
+
+        // Voltar para a página principal após 2 segundos
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
 
       } catch (error) {
         mensagem.style.color = "#ff6666";
