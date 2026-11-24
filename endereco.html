@@ -9,35 +9,35 @@
 
   <style>
     .endereco-container {
-      max-width: 550px;
-      margin: 120px auto 50px;
+      max-width: 500px;
+      margin: 100px auto 50px;
       padding: 30px;
       background: #111;
       border-radius: 18px;
     }
 
-    h1 {
+    .endereco-container h1 {
       color: #0066ff;
       text-align: center;
     }
 
     .campo {
-      margin: 18px 0;
+      margin: 15px 0;
     }
 
-    label {
+    .campo label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
-    input {
+    .campo input {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       box-sizing: border-box;
-      background: #050505;
-      color: white;
       border: 1px solid #444;
       border-radius: 8px;
+      background: #050505;
+      color: white;
     }
 
     button {
@@ -51,20 +51,9 @@
       cursor: pointer;
     }
 
-    button:disabled {
-      opacity: 0.6;
-    }
-
     #mensagem {
       text-align: center;
-      margin-top: 18px;
-    }
-
-    .voltar {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #1680ff;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -72,45 +61,43 @@
 <body>
 
   <main class="endereco-container">
-    <h1>Endereço de entrega</h1>
+    <h1>Meu endereço</h1>
 
     <form id="form-endereco">
 
       <div class="campo">
         <label for="cep">CEP</label>
-        <input id="cep" required maxlength="9"
-          placeholder="00000-000">
+        <input id="cep" required maxlength="9" placeholder="00000-000">
       </div>
 
       <div class="campo">
         <label for="rua">Rua</label>
-        <input id="rua" required maxlength="150">
+        <input id="rua" required>
       </div>
 
       <div class="campo">
         <label for="numero">Número</label>
-        <input id="numero" required maxlength="20">
+        <input id="numero" required>
       </div>
 
       <div class="campo">
         <label for="complemento">Complemento</label>
-        <input id="complemento" maxlength="100">
+        <input id="complemento">
       </div>
 
       <div class="campo">
         <label for="bairro">Bairro</label>
-        <input id="bairro" required maxlength="100">
+        <input id="bairro" required>
       </div>
 
       <div class="campo">
         <label for="cidade">Cidade</label>
-        <input id="cidade" required maxlength="100">
+        <input id="cidade" required>
       </div>
 
       <div class="campo">
-        <label for="estado">Estado (UF)</label>
-        <input id="estado" required maxlength="2"
-          placeholder="SP">
+        <label for="estado">Estado</label>
+        <input id="estado" required maxlength="2" placeholder="SP">
       </div>
 
       <button type="submit" id="btn-salvar">
@@ -119,27 +106,29 @@
 
     </form>
 
-    <div id="mensagem" role="status" aria-live="polite"></div>
-
-    <a href="index.html" class="voltar">
-      ← Voltar à loja
-    </a>
+    <p id="mensagem" role="status" aria-live="polite"></p>
   </main>
 
   <script type="module">
     import { createClient } from
       "https://esm.sh/@supabase/supabase-js@2";
 
+    const SUPABASE_URL =
+      "https://yjlbkermtbnbrhfnbywy.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_nbg_3n1Z9u3fs4DM_i3j4Q_W03ULN4E";
+
     const supabase = createClient(
-      "https://fgdxxygtjjmmtummldne.supabase.co",
-      "sb_publishable_qf6-r8Ucqxgz0J1ABzEHug_YxGc8MP8"
+      SUPABASE_URL,
+      SUPABASE_KEY
     );
 
-    const formulario = document.getElementById("form-endereco");
     const mensagem = document.getElementById("mensagem");
+    const formulario = document.getElementById("form-endereco");
     const botao = document.getElementById("btn-salvar");
 
-    async function verificarLogin() {
+    async function verificarUsuario() {
       const { data, error } = await supabase.auth.getUser();
 
       if (error || !data.user) {
@@ -150,15 +139,17 @@
       return data.user;
     }
 
-    const usuario = await verificarLogin();
+    formulario.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-    if (usuario) {
-      formulario.addEventListener("submit", async (event) => {
-        event.preventDefault();
+      botao.disabled = true;
+      botao.textContent = "Salvando...";
+      mensagem.textContent = "";
 
-        botao.disabled = true;
-        botao.textContent = "Salvando...";
-        mensagem.textContent = "";
+      try {
+        const usuario = await verificarUsuario();
+
+        if (!usuario) return;
 
         const endereco = {
           user_id: usuario.id,
@@ -168,43 +159,32 @@
           complemento: document.getElementById("complemento").value.trim(),
           bairro: document.getElementById("bairro").value.trim(),
           cidade: document.getElementById("cidade").value.trim(),
-          estado: document.getElementById("estado").value.trim().toUpperCase(),
-          principal: true
+          estado: document.getElementById("estado").value.trim().toUpperCase()
         };
 
-        try {
-          if (!/^\d{5}-?\d{3}$/.test(endereco.cep)) {
-            throw new Error("Digite um CEP válido.");
-          }
+        const { error } = await supabase
+          .from("addresses")
+          .insert(endereco);
 
-          if (!/^[A-Z]{2}$/.test(endereco.estado)) {
-            throw new Error("Digite uma UF válida, como SP.");
-          }
+        if (error) throw error;
 
-          const { error } = await supabase
-            .from("addresses")
-            .insert(endereco);
+        mensagem.style.color = "#00cc66";
+        mensagem.textContent = "Endereço salvo com sucesso!";
 
-          if (error) throw error;
+        formulario.reset();
 
-          mensagem.style.color = "#00cc66";
-          mensagem.textContent = "Endereço salvo com sucesso!";
+      } catch (error) {
+        mensagem.style.color = "#ff6666";
+        mensagem.textContent = "Erro ao salvar: " + error.message;
 
-          formulario.reset();
+      } finally {
+        botao.disabled = false;
+        botao.textContent = "Salvar endereço";
+      }
+    });
 
-        } catch (error) {
-          mensagem.style.color = "#ff6666";
-          mensagem.textContent =
-            "Erro ao salvar: " + error.message;
-
-        } finally {
-          botao.disabled = false;
-          botao.textContent = "Salvar endereço";
-        }
-      });
-    }
+    verificarUsuario();
   </script>
 
 </body>
 </html>
-
