@@ -47,26 +47,55 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero" id="inicio">
-    <div class="overlay"></div>
-    <div class="hero-content">
-      <img src="logo.png" alt="Logo AMG Sports" class="hero-logo">
-      <h1>
-        AMG <span>Sports</span>
-      </h1>
-      <p>
-        Seu melhor desempenho, nossa missão.
-      </p>
-      <div class="hero-buttons">
-        <button class="btn-primary" onclick="location.href='#produtos'">
-          Comprar Agora
-        </button>
-        <button class="btn-secondary" onclick="location.href='#produtos'">
-          Ver Coleção
-        </button>
-      </div>
+ 
+<!-- HEADER -->
+<header>
+  <div class="logo-container">
+    <img src="logo.png" alt="Logo AMG Sports" class="logo-img">
+    <div class="logo">
+      AMG <span>Sports</span>
     </div>
-  </section>
+  </div>
+
+  <nav id="menu">
+    <a href="#inicio">Início</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#objetivos">Objetivos</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#beneficios">Benefícios</a>
+    <a href="#equipe">Equipe</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+
+    <!-- BOTÃO ENTRAR -->
+    <a href="login.html"
+       style="background: transparent; border: 1px solid #0066ff; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px;">
+      <i class="fa-solid fa-user"></i> Entrar
+    </a>
+
+    <!-- BOTÃO CRIAR CONTA -->
+    <a href="cadastro.html"
+       style="background: #0066ff; border: none; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px;">
+      <i class="fa-solid fa-user-plus"></i> Criar conta
+    </a>
+
+    <!-- CARRINHO -->
+    <button id="btn-carrinho"
+      style="background: #0066ff; border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+      <i class="fa-solid fa-cart-shopping"></i>
+      Carrinho (<span id="cart-count">0</span>)
+    </button>
+
+    <!-- MENU MOBILE -->
+    <div class="menu-mobile" id="menu-mobile">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+  </div>
+</header>
+
 
   <!-- SOBRE -->
   <section class="about" id="sobre">
