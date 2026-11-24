@@ -1,1 +1,239 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar conta - AMG Sports</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .cadastro-container {
+      max-width: 450px;
+      margin: 120px auto 50px;
+      padding: 30px;
+      background: #111;
+      border-radius: 18px;
+    }
+
+    .cadastro-container h1 {
+      color: #0066ff;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .campo {
+      margin-bottom: 18px;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      background: #050505;
+      color: white;
+      box-sizing: border-box;
+    }
+
+    .cadastro-container button {
+      width: 100%;
+      padding: 14px;
+      background: #0066ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cadastro-container button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #mensagem {
+      text-align: center;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #1680ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="cadastro-container">
+    <h1>Criar minha conta</h1>
+
+    <form id="form-cadastro">
+
+      <div class="campo">
+        <label for="nome">Nome completo</label>
+        <input
+          type="text"
+          id="nome"
+          required
+          maxlength="100"
+          autocomplete="name"
+          placeholder="Digite seu nome"
+        >
+      </div>
+
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          required
+          autocomplete="email"
+          placeholder="Digite seu e-mail"
+        >
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input
+          type="password"
+          id="senha"
+          required
+          minlength="8"
+          autocomplete="new-password"
+          placeholder="Mínimo de 8 caracteres"
+        >
+      </div>
+
+      <div class="campo">
+        <label for="confirmar-senha">Confirmar senha</label>
+        <input
+          type="password"
+          id="confirmar-senha"
+          required
+          minlength="8"
+          autocomplete="new-password"
+          placeholder="Digite a senha novamente"
+        >
+      </div>
+
+      <button type="submit" id="btn-cadastrar">
+        Criar conta
+      </button>
+
+    </form>
+
+    <div id="mensagem" role="status" aria-live="polite"></div>
+
+    <div class="links">
+      Já tem uma conta?
+      <a href="login.html">Entrar</a>
+      <br><br>
+      <a href="index.html">← Voltar à loja</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL =
+      "https://fgdxxygtjjmmtummldne.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_qf6-r8Ucqxgz0J1ABzEHug_YxGc8MP8";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const formulario = document.getElementById("form-cadastro");
+    const mensagem = document.getElementById("mensagem");
+    const botao = document.getElementById("btn-cadastrar");
+
+    formulario.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
+      const confirmarSenha =
+        document.getElementById("confirmar-senha").value;
+
+      mensagem.style.color = "#ff6666";
+
+      if (nome.length < 2) {
+        mensagem.textContent = "Digite seu nome corretamente.";
+        return;
+      }
+
+      if (senha.length < 8) {
+        mensagem.textContent =
+          "A senha precisa ter pelo menos 8 caracteres.";
+        return;
+      }
+
+      if (senha !== confirmarSenha) {
+        mensagem.textContent = "As senhas não são iguais.";
+        return;
+      }
+
+      botao.disabled = true;
+      botao.textContent = "Criando conta...";
+      mensagem.textContent = "";
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password: senha,
+          options: {
+            data: {
+              nome: nome
+            },
+            emailRedirectTo:
+              "https://abedenego2401.github.io/AMG-SPORTS/login.html"
+          }
+        });
+
+        if (error) throw error;
+
+        mensagem.style.color = "#00cc66";
+
+        if (data.session) {
+          mensagem.textContent =
+            "Conta criada com sucesso! Você já pode entrar.";
+        } else {
+          mensagem.textContent =
+            "Cadastro realizado! Verifique seu e-mail para confirmar a conta.";
+        }
+
+        formulario.reset();
+
+      } catch (error) {
+        mensagem.style.color = "#ff6666";
+        mensagem.textContent =
+          "Não foi possível criar a conta: " + error.message;
+
+      } finally {
+        botao.disabled = false;
+        botao.textContent = "Criar conta";
+      }
+    });
+  </script>
+
+</body>
+</html>
+
