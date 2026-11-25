@@ -1,1 +1,256 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Conta - AMG Sports</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .conta-container {
+      max-width: 750px;
+      margin: 100px auto 50px;
+      padding: 30px;
+      background: #111;
+      border-radius: 18px;
+      color: white;
+    }
+
+    .conta-container h1 {
+      color: #1680ff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .conta-card {
+      background: #1b1b1b;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .conta-card h2 {
+      color: #1680ff;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .conta-card p {
+      margin: 10px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .conta-acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .conta-acoes a,
+    .conta-acoes button {
+      flex: 1;
+      min-width: 150px;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #0066ff;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .conta-acoes .btn-sair {
+      background: #b32626;
+    }
+
+    #mensagem {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .conta-container {
+        margin: 40px 15px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="conta-container">
+
+    <h1><i class="fa-solid fa-user-circle"></i> Minha Conta</h1>
+
+    <div id="mensagem">Carregando seus dados...</div>
+
+    <div class="conta-card">
+      <h2><i class="fa-solid fa-user"></i> Dados pessoais</h2>
+
+      <p><strong>Nome:</strong> <span id="nome">Carregando...</span></p>
+      <p><strong>E-mail:</strong> <span id="email">Carregando...</span></p>
+    </div>
+
+    <div class="conta-card">
+      <h2><i class="fa-solid fa-location-dot"></i> Meu endereço</h2>
+
+      <div id="dados-endereco">
+        Carregando endereço...
+      </div>
+    </div>
+
+    <div class="conta-acoes">
+      <a href="endereco.html">
+        <i class="fa-solid fa-pen"></i> Alterar endereço
+      </a>
+
+      <a href="index.html">
+        <i class="fa-solid fa-store"></i> Voltar à loja
+      </a>
+
+      <button class="btn-sair" id="btn-sair">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair da conta
+      </button>
+    </div>
+
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL =
+      "https://yjlbkermtbnbrhfnbywy.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_nbg_3n1Z9u3fs4DM_i3j4Q_W03ULN4E";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const mensagem = document.getElementById("mensagem");
+
+    async function carregarConta() {
+      try {
+        const { data: { user }, error: erroUsuario } =
+          await supabase.auth.getUser();
+
+        if (erroUsuario) throw erroUsuario;
+
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        // BUSCAR PERFIL
+        const { data: perfil, error: erroPerfil } =
+          await supabase
+            .from("profiles")
+            .select("nome, email")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (erroPerfil) throw erroPerfil;
+
+        document.getElementById("nome").textContent =
+          perfil?.nome || "Nome não cadastrado";
+
+        document.getElementById("email").textContent =
+          perfil?.email || user.email || "Não informado";
+
+        // BUSCAR ENDEREÇO
+        const { data: endereco, error: erroEndereco } =
+          await supabase
+            .from("addresses")
+            .select("cep, rua, numero, complemento, bairro, cidade, estado")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+        if (erroEndereco) throw erroEndereco;
+
+        const areaEndereco =
+          document.getElementById("dados-endereco");
+
+        areaEndereco.replaceChildren();
+
+        if (endereco) {
+          const linhas = [
+            ["CEP", endereco.cep],
+            ["Rua", endereco.rua],
+            ["Número", endereco.numero],
+            ["Complemento", endereco.complemento],
+            ["Bairro", endereco.bairro],
+            ["Cidade", endereco.cidade],
+            ["Estado", endereco.estado]
+          ];
+
+          linhas.forEach(([rotulo, valor]) => {
+            if (valor) {
+              const p = document.createElement("p");
+              const strong = document.createElement("strong");
+
+              strong.textContent = rotulo + ": ";
+              p.appendChild(strong);
+              p.appendChild(document.createTextNode(valor));
+
+              areaEndereco.appendChild(p);
+            }
+          });
+        } else {
+          areaEndereco.textContent =
+            "Você ainda não cadastrou um endereço.";
+        }
+
+        mensagem.style.color = "#00cc66";
+        mensagem.textContent = "Conta carregada com sucesso!";
+
+      } catch (erro) {
+        mensagem.style.color = "#ff6666";
+        mensagem.textContent =
+          "Não foi possível carregar sua conta. " + erro.message;
+      }
+    }
+
+    // SAIR DA CONTA
+    document.getElementById("btn-sair")
+      .addEventListener("click", async () => {
+
+        const botao = document.getElementById("btn-sair");
+        botao.disabled = true;
+        botao.textContent = "Saindo...";
+
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+          mensagem.style.color = "#ff6666";
+          mensagem.textContent =
+            "Erro ao sair: " + error.message;
+
+          botao.disabled = false;
+          botao.textContent = "Sair da conta";
+          return;
+        }
+
+        window.location.href = "index.html";
+      });
+
+    carregarConta();
+  </script>
+
+</body>
+</html>
+
