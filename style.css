@@ -1,304 +1,596 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+/* ===== CONFIGURAÇÕES GERAIS ===== */
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMG Sports</title>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  scroll-behavior: smooth;
+}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="novas-secoes.css">
+html {
+  scroll-padding-top: 100px;
+  background: transparent !important;
+}
 
-  <!-- FONT AWESOME -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
+body {
+  background-color: transparent !important;
+  background-image: url("fundo-amg.png") !important;
+  background-repeat: repeat !important;
+  background-position: center top;
+  background-size: 420px auto;
+  background-attachment: fixed;
+  color: white;
+}
 
-<body>
+/* ===== HEADER ===== */
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo-container">
-      <img src="logo.png" alt="Logo AMG Sports" class="logo-img">
-      <div class="logo">
-        AMG <span>Sports</span>
-      </div>
-    </div>
+header {
+  width: 100%;
+  padding: 20px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65) !important;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  border-bottom: 2px solid #0066ff;
+}
 
-    <nav id="menu">
-      <a href="#inicio">Início</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#objetivos">Objetivos</a>
-      <a href="#produtos">Produtos</a>
-      <a href="#beneficios">Benefícios</a>
-      <a href="#equipe">Equipe</a>
-      <a href="#contato">Contato</a>
-    </nav>
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    <!-- LOGIN, CADASTRO, MINHA CONTA E CARRINHO -->
-    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+.logo-img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
 
-      <a href="login.html"
-         style="background: transparent; border: 1px solid #0066ff; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px;">
-        <i class="fa-solid fa-user"></i> Entrar
-      </a>
+.logo {
+  font-size: 35px;
+  font-weight: bold;
+  color: #0066ff;
+}
 
-      <a href="cadastro.html"
-         style="background: #0066ff; border: none; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px;">
-        <i class="fa-solid fa-user-plus"></i> Criar conta
-      </a>
+.logo span {
+  color: white;
+}
 
-      <a href="minha-conta.html"
-         style="background: #0066ff; border: none; color: #fff; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px;">
-        <i class="fa-solid fa-circle-user"></i> Minha Conta
-      </a>
+nav {
+  display: flex;
+  gap: 25px;
+}
 
-      <button id="btn-carrinho"
-        style="background: #0066ff; border: none; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-cart-shopping"></i>
-        Carrinho (<span id="cart-count">0</span>)
-      </button>
+nav a {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  font-weight: bold;
+  transition: 0.3s;
+}
 
-      <div class="menu-mobile" id="menu-mobile">
-        <i class="fa-solid fa-bars"></i>
-      </div>
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #0066ff;
+  left: 0;
+  bottom: -6px;
+  transition: 0.4s;
+}
 
-    </div>
-  </header>
+nav a:hover {
+  color: #0066ff;
+}
 
-  <!-- PRIMEIRA PARTE / HERO -->
-  <section class="hero" id="inicio">
-    <div class="overlay"></div>
+nav a:hover::after {
+  width: 100%;
+}
 
-    <div class="hero-content">
-      <img src="logo.png" alt="Logo AMG Sports" class="hero-logo">
+.menu-mobile {
+  display: none;
+  cursor: pointer;
+  font-size: 25px;
+}
 
-      <h1>
-        AMG <span>Sports</span>
-      </h1>
+/* ===== HERO ===== */
 
-      <p>
-        Seu melhor desempenho, nossa missão.
-      </p>
+.hero {
+  min-height: 100vh;
+  background: transparent !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  padding-top: 100px;
+}
 
-      <div class="hero-buttons">
-        <button class="btn-primary" onclick="location.href='#produtos'">
-          Comprar Agora
-        </button>
+.overlay,
+.hero .overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  background: transparent !important;
+  opacity: 1 !important;
+  pointer-events: none;
+}
 
-        <button class="btn-secondary" onclick="location.href='#produtos'">
-          Ver Coleção
-        </button>
-      </div>
-    </div>
-  </section>
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
 
-  <!-- SOBRE -->
-  <section class="about" id="sobre">
-    <h2 class="title">Sobre a AMG Sports</h2>
+.hero-logo {
+  display: block;
+  width: 520px;
+  max-width: 90%;
+  height: auto;
+  margin: 0 auto 20px;
+  object-fit: contain;
+}
 
-    <div class="about-content">
-      <p>
-        A AMG Sports nasceu com o objetivo de transformar o desempenho esportivo
-        através de produtos modernos, resistentes e desenvolvidos para atletas
-        que buscam superar seus limites.
-      </p>
+.hero-content h1 {
+  font-size: 85px;
+}
 
-      <p>
-        Nossa empresa trabalha com inovação, estilo e tecnologia para entregar
-        a melhor experiência esportiva para nossos clientes.
-      </p>
-    </div>
-  </section>
+.hero-content span {
+  color: #0066ff;
+}
 
-  <!-- OBJETIVOS -->
-  <section class="goals" id="objetivos">
-    <h2 class="title">Nossos Objetivos</h2>
+.hero-content p {
+  margin: 25px 0;
+  font-size: 22px;
+}
 
-    <div class="goals-container">
-      <div class="goal-box">
-        <i class="fa-solid fa-medal"></i>
-        <h3>Qualidade</h3>
-        <p>Produtos premium desenvolvidos com alto padrão de desempenho.</p>
-      </div>
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-      <div class="goal-box">
-        <i class="fa-solid fa-chart-line"></i>
-        <h3>Lucro</h3>
-        <p>Crescimento sustentável com foco em inovação e expansão.</p>
-      </div>
+.btn-primary,
+.btn-secondary {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
 
-      <div class="goal-box">
-        <i class="fa-solid fa-bolt"></i>
-        <h3>Performance</h3>
-        <p>Desenvolver equipamentos para elevar o nível dos atletas.</p>
-      </div>
-    </div>
-  </section>
+.btn-primary {
+  background: #0066ff;
+  color: white;
+}
 
-  <!-- PRODUTOS -->
-  <section class="products" id="produtos">
-    <h2 class="title">Produtos em Destaque</h2>
+.btn-primary:hover {
+  background: white;
+  color: #0066ff;
+}
 
-    <div class="products-container">
+.btn-secondary {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
 
-      <div class="card" data-name="Tênis AMG Runner" data-price="499.90">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" alt="Tênis AMG Runner">
+.btn-secondary:hover {
+  background: white;
+  color: black;
+}
 
-        <div class="card-content">
-          <h3>Tênis AMG Runner</h3>
-          <p>Máximo conforto e desempenho esportivo.</p>
-          <span class="price">R$ 499,90</span>
-          <button class="add-cart">Comprar</button>
-        </div>
-      </div>
+/* ===== SEÇÕES ===== */
 
-      <div class="card" data-name="Camisa AMG Fit" data-price="149.90">
-        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1200&auto=format&fit=crop" alt="Camisa AMG Fit">
+main,
+section {
+  background: transparent !important;
+}
 
-        <div class="card-content">
-          <h3>Camisa AMG Fit</h3>
-          <p>Tecnologia dry-fit premium.</p>
-          <span class="price">R$ 149,90</span>
-          <button class="add-cart">Comprar</button>
-        </div>
-      </div>
+section {
+  padding: 100px 8%;
+}
 
-      <div class="card" data-name="Kit Fitness AMG" data-price="299.90">
-        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop" alt="Kit Fitness AMG">
+.title {
+  text-align: center;
+  font-size: 50px;
+  margin-bottom: 60px;
+  color: #0066ff;
+}
 
-        <div class="card-content">
-          <h3>Kit Fitness AMG</h3>
-          <p>Equipamentos completos para treino.</p>
-          <span class="price">R$ 299,90</span>
-          <button class="add-cart">Comprar</button>
-        </div>
-      </div>
+/* ===== SOBRE ===== */
 
-    </div>
-  </section>
+.about-content {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
 
-  <!-- BENEFÍCIOS -->
-  <section class="benefits" id="beneficios">
-    <h2 class="title">Benefícios de comprar na AMG Sports</h2>
+.about-content p {
+  color: #b5b5b5;
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
 
-    <div class="benefits-container">
-      <div class="benefit-box">
-        <i class="fa-solid fa-truck-fast"></i>
-        <h3>Entrega rápida</h3>
-        <p>Seu pedido chega com agilidade, onde você estiver.</p>
-      </div>
+/* ===== OBJETIVOS ===== */
 
-      <div class="benefit-box">
-        <i class="fa-solid fa-shield-halved"></i>
-        <h3>Compra segura</h3>
-        <p>Seus dados protegidos do carrinho até a entrega.</p>
-      </div>
+.goals-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
 
-      <div class="benefit-box">
-        <i class="fa-solid fa-rotate-left"></i>
-        <h3>Troca facilitada</h3>
-        <p>Não serviu? Você troca sem complicação.</p>
-      </div>
+.goal-box {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 40px;
+  border-radius: 18px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: 0.4s;
+}
 
-      <div class="benefit-box">
-        <i class="fa-solid fa-medal"></i>
-        <h3>Qualidade garantida</h3>
-        <p>Materiais resistentes, feitos para treinos intensos.</p>
-      </div>
+.goal-box:hover {
+  transform: translateY(-10px);
+  border-color: #0066ff;
+  box-shadow: 0 0 25px rgba(0, 102, 255, 0.4);
+}
 
-      <div class="benefit-box">
-        <i class="fa-solid fa-credit-card"></i>
-        <h3>Pagamento flexível</h3>
-        <p>Várias formas de pagar, do jeito que for melhor para você.</p>
-      </div>
+.goal-box i {
+  font-size: 45px;
+  color: #0066ff;
+  margin-bottom: 20px;
+}
 
-      <div class="benefit-box">
-        <i class="fa-solid fa-headset"></i>
-        <h3>Atendimento próximo</h3>
-        <p>Nossa equipe responde suas dúvidas pelo formulário de contato.</p>
-      </div>
-    </div>
-  </section>
+.goal-box h3 {
+  margin-bottom: 15px;
+}
 
-  <!-- EQUIPE -->
-  <section class="team" id="equipe">
-    <h2 class="title">Nossa Equipe</h2>
+.goal-box p {
+  color: #b5b5b5;
+  line-height: 1.6;
+}
 
-    <div class="team-container">
-      <div class="team-card">
-        <div class="avatar">LH</div>
-        <h3>Leonardo Hiroshi</h3>
-        <p>Integrante da equipe</p>
-      </div>
+/* ===== PRODUTOS ===== */
 
-      <div class="team-card">
-        <div class="avatar">BS</div>
-        <h3>Bruno Silva</h3>
-        <p>Integrante da equipe</p>
-      </div>
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
 
-      <div class="team-card">
-        <div class="avatar">RG</div>
-        <h3>Robson Godoy</h3>
-        <p>Integrante da equipe</p>
-      </div>
+.card {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: 0.4s;
+  border: 2px solid transparent;
+}
 
-      <div class="team-card">
-        <div class="avatar">JS</div>
-        <h3>João Santana</h3>
-        <p>Integrante da equipe</p>
-      </div>
+.card:hover {
+  transform: translateY(-10px);
+  border-color: #0066ff;
+  box-shadow: 0 0 25px rgba(0, 102, 255, 0.4);
+}
 
-      <div class="team-card">
-        <div class="avatar">RA</div>
-        <h3>Ricardo Alves</h3>
-        <p>Integrante da equipe</p>
-      </div>
+.card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
 
-      <div class="team-card">
-        <div class="avatar">HG</div>
-        <h3>Higor Gabriel</h3>
-        <p>Integrante da equipe</p>
-      </div>
-    </div>
-  </section>
+.card-content {
+  padding: 25px;
+}
 
-  <!-- CONTATO -->
-  <section class="contact" id="contato">
-    <h2 class="title">Fale com a AMG Sports</h2>
+.card-content h3 {
+  color: #0066ff;
+  margin-bottom: 10px;
+}
 
-    <p class="contact-intro">
-      Envie sua dúvida, sugestão ou comentário. A mensagem chega direto para a nossa equipe.
-    </p>
+.card-content p {
+  color: #b5b5b5;
+  line-height: 1.5;
+}
 
-    <form id="form-contato" class="contact-form" novalidate>
-      <label for="c-nome">Nome</label>
-      <input type="text" id="c-nome" name="nome" placeholder="Seu nome" required>
+.price {
+  display: block;
+  margin: 20px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
 
-      <label for="c-email">Seu e-mail</label>
-      <input type="email" id="c-email" name="email" placeholder="voce@email.com" required>
+.card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #0066ff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-      <label for="c-mensagem">Comentário</label>
-      <textarea id="c-mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem" required></textarea>
+.card button:hover {
+  background: white;
+  color: #0066ff;
+}
 
-      <button type="submit" class="btn-primary" id="btn-enviar">
-        Enviar mensagem
-      </button>
+/* ===== BENEFÍCIOS ===== */
 
-      <p id="form-status" role="status" aria-live="polite"></p>
-    </form>
-  </section>
+.benefits-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
 
-  <!-- FOOTER -->
-  <footer>
-    <p>
-      © 2026 AMG Sports - Todos os direitos reservados.
-    </p>
-  </footer>
+.benefit-box {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 40px;
+  border-radius: 18px;
+  text-align: center;
+  transition: 0.4s;
+  border: 2px solid transparent;
+}
 
-  <!-- JS -->
-  <script src="amg.js"></script>
+.benefit-box:hover {
+  transform: translateY(-10px);
+  border-color: #0066ff;
+  box-shadow: 0 0 25px rgba(0, 102, 255, 0.5);
+}
 
-</body>
-</html>
+.benefit-box i {
+  font-size: 50px;
+  color: #0066ff;
+  margin-bottom: 20px;
+}
+
+.benefit-box h3 {
+  margin-bottom: 10px;
+}
+
+.benefit-box p {
+  color: #b5b5b5;
+  line-height: 1.6;
+}
+
+/* ===== EQUIPE ===== */
+
+.team-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.team-card {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 40px;
+  border-radius: 18px;
+  text-align: center;
+  transition: 0.4s;
+  border: 2px solid transparent;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  border-color: #0066ff;
+  box-shadow: 0 0 25px rgba(0, 102, 255, 0.4);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #0066ff;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+}
+
+.team-card h3 {
+  margin-bottom: 10px;
+}
+
+.team-card p {
+  color: #b5b5b5;
+  line-height: 1.6;
+}
+
+/* ===== CONTATO ===== */
+
+.contact-intro {
+  max-width: 600px;
+  margin: -30px auto 40px;
+  text-align: center;
+  font-size: 18px;
+  color: #b5b5b5;
+  line-height: 1.6;
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 40px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-form label {
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  border: 2px solid #222;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 16px;
+  resize: vertical;
+  transition: 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #0066ff;
+}
+
+.contact-form button {
+  margin-top: 20px;
+}
+
+.contact-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+#form-status {
+  min-height: 22px;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+#form-status.ok {
+  color: #00cc66;
+}
+
+#form-status.erro {
+  color: #ff5c5c;
+}
+
+/* ===== CARRINHO ===== */
+
+#btn-carrinho {
+  white-space: nowrap;
+}
+
+/* ===== FOOTER ===== */
+
+footer {
+  background: rgba(0, 0, 0, 0.65) !important;
+  text-align: center;
+  padding: 40px;
+  border-top: 2px solid #0066ff;
+  color: #b5b5b5;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 1100px) {
+  header {
+    padding: 20px 5%;
+  }
+
+  nav {
+    gap: 15px;
+  }
+
+  nav a {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 850px) {
+  header {
+    padding: 15px 5%;
+  }
+
+  .menu-mobile {
+    display: block;
+  }
+
+  nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 30px;
+    border-bottom: 2px solid #0066ff;
+  }
+
+  nav.active {
+    display: flex;
+  }
+
+  .logo {
+    font-size: 27px;
+  }
+
+  .hero-content h1 {
+    font-size: 55px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 500px) {
+  header {
+    padding: 12px 4%;
+  }
+
+  .logo-img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .logo {
+    font-size: 23px;
+  }
+
+  #btn-carrinho {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-content p {
+    font-size: 17px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  section {
+    padding: 75px 5%;
+  }
+
+  .contact-form {
+    padding: 25px;
+  }
+
+  .benefit-box,
+  .team-card,
+  .goal-box {
+    padding: 30px;
+  }
+}
