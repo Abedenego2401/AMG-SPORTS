@@ -578,3 +578,10 @@ footer {
     padding: 30px;
   }
 }
+.hero-logo {
+  display: block;
+  width: 520px;
+  max-width: 90%;
+  height: auto;
+  margin: 0 auto 20px;
+}
